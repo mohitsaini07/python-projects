@@ -1,0 +1,30 @@
+[
+    {
+        "date": "2026-09-15",
+        "category": "Food",
+        "time": "12:40",
+        "amount": 250,
+        "description": "Lunch"
+    },
+    {
+        "date": "2026-09-15",
+        "time": "08:45",
+        "category": "Transport",
+        "amount": 100,
+        "description": "Bus"
+    },
+    {
+        "date": "2026-09-16",
+        "time": "10:10",
+        "category": "Music",
+        "amount": 100.0,
+        "description": "Spotify"
+    },
+    {
+        "date": "2026-09-17",
+        "time": "11:37",
+        "category": "Design",
+        "amount": 1000.0,
+        "description": "figma"
+    }
+]

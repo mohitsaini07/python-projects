@@ -1,27 +1,49 @@
 import datetime
+import json
+import os
 
-expenses = [
-    {
-        "date": "2026-09-15",
-        "category": "Food",
-        "amount": 250,
-        "description": "Lunch"
-    },
-    {
-        "date": "2026-09-15",
-        "category": "Transport",
-        "amount": 100,
-        "description": "Bus"
-    }
-]
+DATA_FILE = "expenses.json"
 
-def add_expense(date, category, price, description):
+def load_expenses():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                return []
+    else:
+        return [
+            {
+                "date": "2026-09-15",
+                "time": "12:40",
+                "category": "Food",
+                "amount": 250,
+                "description": "Lunch"
+            },
+            {
+                "date": "2026-09-15",
+                "time": "08:45",
+                "category": "Transport",
+                "amount": 100,
+                "description": "Bus"
+            }
+    ]
+
+def save_expenses():
+    with open(DATA_FILE, "w") as file:
+        json.dump(expenses, file, indent=4)
+
+expenses = load_expenses()
+
+def add_expense(date, time, category, price, description):
     expenses.append({
         "date": date,
+        "time": time,
         "category": category,
         "amount": price,
         "description": description
     })
+    save_expenses()
     print("Expense added successfully!")
 
 def show_expense():
@@ -30,7 +52,7 @@ def show_expense():
     else:
         print("\nHere is your Expense List: \n")
         for expense in expenses:
-            print(f"Date: {expense['date']} | Category: {expense['category']} | Amount: ₹{expense['amount']} | Desc: {expense['description']}")
+            print(f"Date: {expense['date']} | Time: {expense['time']} | Category: {expense['category']} | Amount: ₹{expense['amount']} | Desc: {expense['description']}")
 
 def total_expense():
     total = sum(expense["amount"] for expense in expenses)
@@ -54,6 +76,7 @@ def run_app():
         choice = show_menu()
         if choice == "1":
             date = datetime.date.today().isoformat()
+            time = datetime.datetime.now().strftime("%H:%M")
             category = input("Enter Category: ")
             while True:
                 try:
@@ -62,13 +85,13 @@ def run_app():
                 except ValueError:
                     print("Invalid amount")
             description = input("Enter description: ")
-            add_expense(date, category, amount, description)
+            add_expense(date, time, category, amount, description)
         
         elif choice == "2":
             show_expense()
         elif choice == "3":
             total = total_expense()
-            print("Total Expenses: ", total)
+            print(f"Total Expenses: ")
         elif choice == "4":
             category = input("Enter a category: ")
             filtered = fltr_by_category(category)
@@ -77,7 +100,7 @@ def run_app():
             else:
                 print(f"\n--- {category} expenses ---")
                 for expense in filtered:
-                    print(f"Date: {expense['date']} | Amount: ₹{expense['amount']} | Desc: {expense['description']}")
+                    print(f"Date: {expense['date']} | Time: {expense['time']} | Amount: ₹{expense['amount']} | Desc: {expense['description']}")
         elif choice == "5":
             print("Exiting...")
             break
